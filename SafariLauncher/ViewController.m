@@ -19,7 +19,7 @@
 @implementation ViewController
 @synthesize delayTimer;
 
-int secondsLeft;
+NSUInteger secondsLeft;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -76,9 +76,9 @@ int secondsLeft;
 
 -(void) delayCountdown {
     secondsLeft--;
-    infoLabel.text = [NSString stringWithFormat:@"  Pausing %02d seconds before launch", secondsLeft];
+    infoLabel.text = [NSString stringWithFormat:@"  Pausing %02lu seconds before launch", (unsigned long)secondsLeft];
     
-    NSLog(@"delay: %d", secondsLeft);
+    NSLog(@"delay: %lu", (unsigned long)secondsLeft);
     if (secondsLeft <= 0) {
         [self.delayTimer invalidate];
         self.delayTimer = nil;
