@@ -53,8 +53,6 @@ static BOOL foregroungCheckFlag = false;
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
         if(foregroungCheckFlag){
-        Preferences *preferences = [Preferences sharedInstance];
-        [SafariLauncher launch:preferences.launchUrl withDelay:preferences.nonStartDelay];
     }
 }
 
@@ -66,11 +64,7 @@ static BOOL foregroungCheckFlag = false;
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
 {
     foregroungCheckFlag = false;
-    Preferences *preferences = [Preferences sharedInstance];
-    if (!url) {
-        [SafariLauncher launch:preferences.launchUrl withDelay:preferences.nonStartDelay];
-    }else{
-        
+    
         NSString *launchUrl = [[url absoluteString] substringFromIndex:5];
         if([launchUrl hasPrefix:@"http//"]){
             launchUrl = [launchUrl stringByReplacingOccurrencesOfString:@"http//"
@@ -80,8 +74,8 @@ static BOOL foregroungCheckFlag = false;
                                                              withString:@"https://"];
         }
         
-        [SafariLauncher launch:launchUrl withDelay:preferences.nonStartDelay];
-    }
+        [SafariLauncher launch:launchUrl];
+    
     return YES;
 }
 

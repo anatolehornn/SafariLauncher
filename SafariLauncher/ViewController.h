@@ -11,6 +11,7 @@
 @interface ViewController : UIViewController{
     UILabel *titleLabel;
     UILabel *infoLabel;
+    UIButton *launchButton;
 }
 
 @property (nonatomic, strong) NSTimer *delayTimer;

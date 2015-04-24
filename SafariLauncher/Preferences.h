@@ -16,8 +16,6 @@
 }
 
 @property (readonly, nonatomic) NSString *launchUrl;
-@property (readonly, nonatomic) NSUInteger startDelay;
-@property (readonly, nonatomic) NSUInteger nonStartDelay;
 
 // Singleton
 + (Preferences *)sharedInstance;

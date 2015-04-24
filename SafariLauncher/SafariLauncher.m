@@ -11,11 +11,8 @@
 
 @implementation SafariLauncher
 
-+ (void)launch:(NSString *)url withDelay:(NSUInteger)delay{
++ (void)launch:(NSString *)url {
     Preferences *preferences = [Preferences sharedInstance];
-
-    NSLog(@"Waiting for %lu seconds", (unsigned long)delay);
-    [NSThread sleepForTimeInterval:delay];
     
     NSURL *launchUrl = [NSURL URLWithString: url];
     
