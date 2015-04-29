@@ -18,9 +18,7 @@ xcuserdata/
 project.xcworkspace/
 
 # build products
-build/SafariLauncher.build
-build/Debug-iphoneos/*
-!build/Debug-iphoneos/SafariLauncher.zip
+build/
 *.[oa]
 
 # Other source repository archive directories (protects when importing)
