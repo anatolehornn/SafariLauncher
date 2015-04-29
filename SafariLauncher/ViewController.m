@@ -19,7 +19,7 @@
 @implementation ViewController
 @synthesize delayTimer;
 
-int secondsLeft;
+NSUInteger secondsLeft;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -33,32 +33,40 @@ int secondsLeft;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    Preferences *preferences = [Preferences sharedInstance];
     // Do any additional setup after loading the view.
     int fontSize = self.view.bounds.size.height/25;
     
     NSLog(@"  height - %02f : width - %02f", self.view.bounds.size.height, self.view.bounds.size.width);
     titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.view.bounds.size.width/4.0f,
-                                                      self.view.bounds.size.height/2.0f,
-                                                      self.view.bounds.size.width/2.0f,
+                                                      10,
+                                                      self.view.bounds.size.width,
                                                       50)]; 
     titleLabel.text = @"Safari Launcher";
     titleLabel.textColor = [UIColor blueColor];
     titleLabel.font = [UIFont fontWithName:@"Verdana" size:fontSize];
     
+    launchButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [launchButton addTarget:self action:@selector(launchSafari) forControlEvents:UIControlEventTouchUpInside];
+    [launchButton setTitle:@"Launch Safari" forState:UIControlStateNormal];
+    [launchButton setIsAccessibilityElement:YES];
+    [launchButton setAccessibilityLabel:@"launch safari"];
+    
+    CGRect bounds = self.view.bounds;
+    launchButton.frame = CGRectMake(80.0, 210.0, 200.0, 60.0);
+    launchButton.center = CGPointMake(CGRectGetMidX(bounds), CGRectGetMidY(bounds));
+    
     infoLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,
                                                       self.view.bounds.size.height-50.0f,
                                                       self.view.bounds.size.width,
                                                       50)];
-    infoLabel.text = @"Status:";
+    infoLabel.text = [NSString stringWithFormat:@"   url: %@", preferences.launchUrl];
     infoLabel.layer.borderColor = [UIColor blackColor].CGColor;
     infoLabel.layer.borderWidth = 3.0;
     
     [self.view addSubview:titleLabel];
+    [self.view addSubview:launchButton];
     [self.view addSubview:infoLabel];
-    
-    Preferences *preferences = [Preferences sharedInstance];
-    secondsLeft = preferences.startDelay;
-    self.delayTimer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(delayCountdown) userInfo:nil repeats:YES];
 }
 
 - (void)viewDidUnload
@@ -74,18 +82,6 @@ int secondsLeft;
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
--(void) delayCountdown {
-    secondsLeft--;
-    infoLabel.text = [NSString stringWithFormat:@"  Pausing %02d seconds before launch", secondsLeft];
-    
-    NSLog(@"delay: %d", secondsLeft);
-    if (secondsLeft <= 0) {
-        [self.delayTimer invalidate];
-        self.delayTimer = nil;
-        [self launchSafari];
-    }
-}
-
 -(void) launchSafari{
     Preferences *preferences = [Preferences sharedInstance];
     NSArray * args = [[NSProcessInfo processInfo] arguments];
@@ -94,7 +90,7 @@ int secondsLeft;
         urlArg = [args objectAtIndex: 1];
     }
     infoLabel.text = [NSString stringWithFormat:@"  Launching: %@", urlArg];
-    [SafariLauncher launch:urlArg withDelay:preferences.nonStartDelay];
+    [SafariLauncher launch:urlArg];
 }
 
 @end

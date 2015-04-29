@@ -9,15 +9,11 @@
 #import "Preferences.h"
 
 static NSString * const PREF_LAUNCH_URL = @"preference_launchUrl";
-static NSString * const PREF_START_DELAY = @"preference_startDelay";
 static NSString * const DEFAULT_URL = @"http://www.google.com";
-static NSUInteger const NON_START_DELAY = 0;
 
 @implementation Preferences
 
 @synthesize launchUrl = launchUrl_;
-@synthesize startDelay = startDelay_;
-@synthesize nonStartDelay = nonStartDelay_;
 
 /*
 static Preferences *singleton = nil;
@@ -42,9 +38,8 @@ static Preferences *singleton = nil;
 + (void) initPreferences {
     NSUserDefaults* userDefaults = [NSUserDefaults standardUserDefaults];
     id launchUrl = [userDefaults objectForKey:PREF_LAUNCH_URL];
-    id startDelay = [userDefaults objectForKey:PREF_START_DELAY];
     
-    if (launchUrl == nil || startDelay == nil) {
+    if (launchUrl == nil) {
         NSLog(@"App setting not found. Initializing app settings to default values.");
         
         NSString* bundlePath = [[NSBundle mainBundle] bundlePath];
@@ -86,14 +81,6 @@ static Preferences *singleton = nil;
         launchUrl_ = [[Preferences getDefaultUrl] absoluteString];
         [defaults setObject:launchUrl_ forKey:PREF_LAUNCH_URL];
     }
-    
-    startDelay_ = [defaults integerForKey:PREF_START_DELAY];
-    if (!startDelay_) {
-        startDelay_ = 20;
-        [defaults setObject:@"0" forKey:PREF_START_DELAY];
-    }
-
-    nonStartDelay_ = NON_START_DELAY;
     
     [defaults synchronize];
     return self;

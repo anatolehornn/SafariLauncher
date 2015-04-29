@@ -9,5 +9,5 @@
 #import <Foundation/Foundation.h>
 
 @interface SafariLauncher : NSObject
-+ (void)launch:(NSString *)url withDelay:(NSUInteger)delay;
++ (void)launch:(NSString *)url;
 @end
